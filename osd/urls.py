@@ -15,11 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
+from rest_framework import routers
+from rest_framework_jwt.views import obtain_jwt_token
+from products.views import ProductView
+from carts.views import CartView
+
+router = routers.DefaultRouter()
+router.register(r'products', ProductView, 'product')
+router.register(r'carts', CartView, 'cart')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('token-auth/', obtain_jwt_token),
-    path('token-auth-refresh/', refresh_jwt_token),
     path('users/', include('users.urls')),
+    path('', include(router.urls)),
 ]

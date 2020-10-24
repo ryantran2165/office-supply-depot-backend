@@ -1,0 +1,7 @@
+from django.db import models
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(
+        to='users.CustomUser', on_delete=models.CASCADE, to_field="id")
+    items = models.JSONField(null=True)

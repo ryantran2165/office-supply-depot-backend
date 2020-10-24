@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'first_name', 'last_name', 'is_driver')
+        fields = ('email', 'first_name', 'last_name', 'is_driver',)
 
 
 class UserSerializerWithToken(serializers.ModelSerializer):
@@ -34,4 +34,4 @@ class UserSerializerWithToken(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('token', 'first_name', 'last_name',
-                  'email', 'password', 'is_driver')
+                  'email', 'password', 'is_driver',)
