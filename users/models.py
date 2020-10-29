@@ -2,9 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
-from carts.models import Cart
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class CustomUserManager(BaseUserManager):
@@ -52,11 +49,4 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
-
-
-# Create empty cart for new users
-@receiver(post_save, sender=CustomUser)
-def create_cart(sender, instance, created, **kwargs):
-    if created:
-        Cart.objects.create(user=instance)
+        return self.first_name + " " + self.last_name + " (" + self.email + ")"

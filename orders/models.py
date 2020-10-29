@@ -1,20 +1,18 @@
 from django.db import models
-from users.models import CustomUser
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import RegexValidator
 
 
 class Order(models.Model):
     class DeliveryMethod(models.TextChoices):
-        FREE_SAME_DAY_DRONE = 'FREE_SAME_DAY_DRONE', 'FREE_SAME_DAY_DRONE'
-        FREE_TWO_DAY_TRUCK = 'FREE_TWO_DAY_TRUCK', 'FREE_TWO_DAY_TRUCK'
-        PREMIUM_SAME_DAY_TRUCK = 'PREMIUM_SAME_DAY_TRUCK', 'PREMIUM_SAME_DAY_TRUCK'
-        PREMIUM_SAME_DAY_DRONE = 'PREMIUM_SAME_DAY_DRONE', 'PREMIUM_SAME_DAY_DRONE'
-        PREMIUM_TWO_DAY_TRUCK = 'PREMIUM_TWO_DAY_TRUCK', 'PREMIUM_TWO_DAY_TRUCK'
+        FREE_SAME_DAY_DRONE = 'FREE_SAME_DAY_DRONE'
+        FREE_TWO_DAY_TRUCK = 'FREE_TWO_DAY_TRUCK'
+        PREMIUM_SAME_DAY_TRUCK = 'PREMIUM_SAME_DAY_TRUCK'
+        PREMIUM_SAME_DAY_DRONE = 'PREMIUM_SAME_DAY_DRONE'
+        PREMIUM_TWO_DAY_TRUCK = 'PREMIUM_TWO_DAY_TRUCK'
 
     user = models.ForeignKey(
-        to=CustomUser, on_delete=models.CASCADE, to_field="id")
-    items = models.JSONField()
+        to='users.CustomUser', on_delete=models.CASCADE)
     subtotal = models.DecimalField(max_digits=8, decimal_places=2)
     delivery_cost = models.DecimalField(max_digits=8, decimal_places=2)
     taxes = models.DecimalField(max_digits=8, decimal_places=2)
@@ -35,4 +33,14 @@ class Order(models.Model):
         )
     ])
     date_delivered = models.DateTimeField(null=True, blank=True)
-    driver_id = models.IntegerField(null=True, blank=True)
+    driver = models.ForeignKey(
+        to='users.CustomUser', on_delete=models.SET_NULL, null=True, blank=True, related_name='driver')
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(
+        to=Order, on_delete=models.CASCADE)
+    item = models.ForeignKey(to='products.Product',
+                             on_delete=models.SET_NULL, null=True)
+    quantity = models.IntegerField()
+    price = models.DecimalField(max_digits=8, decimal_places=2)

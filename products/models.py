@@ -81,3 +81,6 @@ class Product(models.Model):
     subcategory = models.CharField(
         max_length=128, choices=Subcategory.choices)
     inventory = models.IntegerField()
+
+    def __str__(self):
+        return self.name
