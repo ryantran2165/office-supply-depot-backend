@@ -47,13 +47,19 @@ class OrderView(viewsets.ViewSet):
         """ Given an order_id, return all the OrderItems associated with it.
             The expected post data should be of the form: {"order_id":"1"}
         """
+        # Example Post Data: {"order_id": "16"}
         print(request.data['order_id'])
         order_id = request.data['order_id']
         order_items = OrderItem.objects.filter(order_id=order_id)
         if len(order_items) == 0:
             return Response({'order_items': []})
         order_items_serializer = OrderItemSerializer(order_items, many=True)
-        return Response({'order_items': order_items_serializer.data})
+
+        items = []
+        for order_item in order_items:
+            items.append({'name': str(order_item.item), 'price': str(order_item.price), 'quantity': str(order_item.quantity)}) # Includes the name, which order_items doesn't. Probably don't need to return order_items
+
+        return Response({'order_items': order_items_serializer.data, 'products': items})
 
     def list(self, request):
         """ Lists all the orders of the current user.
