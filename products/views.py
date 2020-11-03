@@ -22,12 +22,12 @@ class ProductView(viewsets.ReadOnlyModelViewSet):
             products = products.filter(name__icontains=query)
         if category != "":
             products = products.filter(category=category)
-        # if subcategory != "":
-        #     products = products.filter(subcategory=subcategory)
+        if subcategory != "":
+            products = products.filter(subcategory=subcategory)
 
         start = items * (page - 1)
         end = items * page
         queryset = products[start:end]
 
         serializer = ProductSerializer(queryset, many=True)
-        return Response({"products": serializer.data, "count": len(queryset)})
+        return Response({"products": serializer.data, "count": queryset.count()})
