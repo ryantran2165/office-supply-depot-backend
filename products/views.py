@@ -16,18 +16,38 @@ class ProductView(viewsets.ReadOnlyModelViewSet):
         # Retrieve query params
         items = int(self.request.query_params.get('items', 20))
         page = int(self.request.query_params.get('page', 1))
-        query = self.request.query_params.get('query', "")
-        category = self.request.query_params.get('category', "")
-        subcategory = self.request.query_params.get('subcategory', "")
+        query = self.request.query_params.get('query', '')
+        category = self.request.query_params.get('category', '')
+        subcategory = self.request.query_params.get('subcategory', '')
+        min_price = float(self.request.query_params.get('min_price', 0))
+        max_price = float(self.request.query_params.get(
+            'max_price', float('inf')))
+        sort = self.request.query_params.get(
+            'sort', 'Best Match' if query != '' else 'Name A to Z')
 
-        # Filter by query, category, and subcategory
+        # Filter
         products = self.get_queryset()
-        if query != "":
+        if query != '':
             products = products.filter(name__icontains=query)
-        if category != "":
+        if category != '':
             products = products.filter(category=category)
-        if subcategory != "":
+        if subcategory != '':
             products = products.filter(subcategory=subcategory)
+        products = products.filter(price__gte=min_price)
+        products = products.filter(price__lte=max_price)
+
+        # Sort
+        if sort == 'Best Match':
+            products = products.annotate(
+                rank=SearchRank(SearchVector('name', 'description'), SearchQuery(query))).order_by('-rank')
+        elif sort == 'Name A to Z':
+            products = products.order_by('name', 'price')
+        elif sort == 'Name Z to A':
+            products = products.order_by('-name', 'price')
+        elif sort == 'Price Low to High':
+            products = products.order_by('price', 'name')
+        elif sort == 'Price High to Low':
+            products = products.order_by('-price', 'name')
 
         # Calculate queryset based on number of items desired and page
         start = items * (page - 1)
@@ -36,7 +56,7 @@ class ProductView(viewsets.ReadOnlyModelViewSet):
 
         # Serialize and return
         serializer = self.get_serializer(queryset, many=True)
-        return Response({"products": serializer.data, "count": queryset.count()})
+        return Response({'products': serializer.data, 'count': products.count()})
 
     @action(detail=False)
     def list_similar(self, request):
@@ -52,16 +72,14 @@ class ProductView(viewsets.ReadOnlyModelViewSet):
 
         # Exclude target product and filter by category and subcategory
         products = products.exclude(pk=product_id)
-        if category != "":
+        if category != '':
             products = products.filter(category=category)
-        if subcategory != "":
+        if subcategory != '':
             products = products.filter(subcategory=subcategory)
 
         # Rank similarity by target product's name found in other products' names and descriptions
-        vector = SearchVector('name', 'description')
-        query = SearchQuery(product.name)
         products = products.annotate(
-            rank=SearchRank(vector, query)).order_by('-rank')
+            rank=SearchRank(SearchVector('name', 'description'), SearchQuery(product.name))).order_by('-rank')
 
         # Calculate queryset based on number of items desired
         queryset = products[:items]
