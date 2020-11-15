@@ -14,15 +14,15 @@ class ProductView(viewsets.ReadOnlyModelViewSet):
 
     def list(self, request):
         # Retrieve query params
-        items = int(self.request.query_params.get('items', 20))
-        page = int(self.request.query_params.get('page', 1))
-        query = self.request.query_params.get('query', '')
-        category = self.request.query_params.get('category', '')
-        subcategory = self.request.query_params.get('subcategory', '')
-        min_price = float(self.request.query_params.get('min_price', 0))
-        max_price = float(self.request.query_params.get(
+        items = int(request.query_params.get('items', 20))
+        page = int(request.query_params.get('page', 1))
+        query = request.query_params.get('query', '')
+        category = request.query_params.get('category', '')
+        subcategory = request.query_params.get('subcategory', '')
+        min_price = float(request.query_params.get('min_price', 0))
+        max_price = float(request.query_params.get(
             'max_price', float('inf')))
-        sort = self.request.query_params.get(
+        sort = request.query_params.get(
             'sort', 'Best Match' if query != '' else 'Name A to Z')
 
         # Filter
@@ -61,8 +61,8 @@ class ProductView(viewsets.ReadOnlyModelViewSet):
     @action(detail=False)
     def list_similar(self, request):
         # Retreive query params
-        items = int(self.request.query_params.get('items', 4))
-        product_id = int(self.request.query_params.get('id'))
+        items = int(request.query_params.get('items', 4))
+        product_id = int(request.query_params.get('id'))
 
         # Retrieve target product category and subcategory
         products = self.get_queryset()
