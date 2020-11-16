@@ -1,5 +1,4 @@
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import RegexValidator
 
 
@@ -17,15 +16,19 @@ class Order(models.Model):
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
     address_1 = models.CharField(max_length=128)
-    address_2 = models.CharField(max_length=128, null=True, blank=True)
+    address_2 = models.CharField(max_length=128, blank=True, default='')
     city = models.CharField(max_length=64)
     state = models.CharField(max_length=64)
     zip_code = models.CharField(max_length=5, validators=[
         RegexValidator(
-            regex='^\d{5}$'
+            regex='\d{5}'
         )
     ])
-    phone = PhoneNumberField()
+    phone = models.CharField(max_length=10, validators=[
+        RegexValidator(
+            regex='\d{10}'
+        )
+    ])
     shipping_method = models.CharField(
         max_length=128, choices=DeliveryMethod.choices)
     subtotal = models.DecimalField(max_digits=8, decimal_places=2)
