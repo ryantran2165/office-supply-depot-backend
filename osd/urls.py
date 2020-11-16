@@ -19,10 +19,12 @@ from rest_framework import routers
 from rest_framework_jwt.views import obtain_jwt_token
 from products.views import ProductView
 from carts.views import CartView
+from orders.views import OrderView
 
 router = routers.DefaultRouter()
 router.register(r'products', ProductView, 'product')
 router.register(r'carts', CartView, 'cart')
+router.register(r'orders', OrderView, 'order')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
