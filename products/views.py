@@ -61,7 +61,7 @@ class ProductView(viewsets.ReadOnlyModelViewSet):
     @action(detail=False)
     def list_similar(self, request):
         # Retreive query params
-        items = int(request.query_params.get('items', 4))
+        items = int(request.query_params.get('items', 5))
         product_id = int(request.query_params.get('id'))
 
         # Retrieve target product category and subcategory

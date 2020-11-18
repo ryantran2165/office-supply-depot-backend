@@ -31,4 +31,4 @@ class DeliverySerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('id', 'first_name', 'last_name', 'address_1',
-                  'address_2', 'city', 'state', 'zip_code',)
+                  'address_2', 'city', 'state', 'zip_code', 'phone',)
