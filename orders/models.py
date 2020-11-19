@@ -4,7 +4,8 @@ from django.core.validators import RegexValidator
 
 class Order(models.Model):
     class DeliveryMethod(models.TextChoices):
-        PICKUP = 'PICKUP'
+        PICKUP_1 = 'PICKUP_1'
+        PICKUP_2 = 'PICKUP_2'
         FREE_SAME_DAY_DRONE = 'FREE_SAME_DAY_DRONE'
         COST_SAME_DAY_DRONE = 'COST_SAME_DAY_DRONE'
         FREE_TWO_DAY_TRUCK = 'FREE_TWO_DAY_TRUCK'
