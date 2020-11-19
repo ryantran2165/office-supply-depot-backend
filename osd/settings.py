@@ -117,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Los_Angeles'
 
 USE_I18N = True
 
@@ -151,7 +151,7 @@ CORS_ORIGIN_WHITELIST = (
 
 JWT_AUTH = {
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'osd.utils.my_jwt_response_handler',
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=900),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=1800),
 }
 
 django_heroku.settings(locals())
