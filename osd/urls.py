@@ -20,6 +20,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from products.views import ProductView
 from carts.views import CartView
 from orders.views import OrderView
+from django.contrib.auth.models import Group
 
 router = routers.DefaultRouter()
 router.register(r'products', ProductView, 'product')
@@ -32,3 +33,8 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('', include(router.urls)),
 ]
+
+admin.site.unregister(Group)
+admin.site.site_header = 'Office Supply Depot Administration'
+admin.site.index_title = 'Site administration'
+admin.site.site_title = 'OSD Admin'
