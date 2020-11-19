@@ -17,11 +17,11 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active', 'is_driver')}
+            'fields': ('first_name', 'last_name', 'email', 'password1', 'password2', 'is_staff', 'is_active', 'is_driver')}
          ),
     )
-    search_fields = ('email',)
-    ordering = ('email',)
+    search_fields = ('email', 'first_name', 'last_name',)
+    ordering = ('email', 'first_name', 'last_name',)
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

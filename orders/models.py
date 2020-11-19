@@ -3,7 +3,7 @@ from django.core.validators import RegexValidator
 
 
 class Order(models.Model):
-    class DeliveryMethod(models.TextChoices):
+    class ShippingMethod(models.TextChoices):
         PICKUP_1 = 'PICKUP_1'
         PICKUP_2 = 'PICKUP_2'
         FREE_SAME_DAY_DRONE = 'FREE_SAME_DAY_DRONE'
@@ -18,8 +18,8 @@ class Order(models.Model):
     last_name = models.CharField(max_length=128)
     address_1 = models.CharField(max_length=128)
     address_2 = models.CharField(max_length=128, blank=True, default='')
-    city = models.CharField(max_length=64)
-    state = models.CharField(max_length=64)
+    city = models.CharField(max_length=128)
+    state = models.CharField(max_length=2)
     zip_code = models.CharField(max_length=5, validators=[
         RegexValidator(
             regex='\d{5}'
@@ -31,7 +31,7 @@ class Order(models.Model):
         )
     ])
     shipping_method = models.CharField(
-        max_length=128, choices=DeliveryMethod.choices)
+        max_length=128, choices=ShippingMethod.choices)
     subtotal = models.DecimalField(max_digits=8, decimal_places=2)
     tax = models.DecimalField(max_digits=8, decimal_places=2)
     shipping_cost = models.DecimalField(max_digits=8, decimal_places=2)

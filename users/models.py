@@ -31,6 +31,8 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
+    first_name = models.CharField(max_length=128)
+    last_name = models.CharField(max_length=128)
     is_driver = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
