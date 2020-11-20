@@ -63,11 +63,7 @@ class Product(models.Model):
         FILLER_GRAPH_PAPER = 'Filler and Graph Paper'
         ARTS_CRAFTS = 'Arts and Crafts'
         SCHOOL_ELECTRONICS = 'School Electronics'
-        WRITING = 'Writing'
         BACKPACKS_LUNCH_BAGS = 'Backpacks and Lunch Bags'
-        FOLDERS_BINDERS = 'Folders and Binders'
-        BASIC_SCHOOL_SUPPLIES = 'Basic School Supplies'
-        NOTEBOOKS_PAPER = 'Notebooks and Paper'
         ETC = 'Etc'
 
     name = models.CharField(max_length=128)
