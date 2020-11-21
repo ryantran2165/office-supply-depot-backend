@@ -53,7 +53,7 @@ class Product(models.Model):
         PHONES_ACCESSORIES = 'Phones and Accessories'
         TVS_HOME_THEATER = 'TVs and Home Theater'
         NETWORKING_CABLES = 'Networking and Cables'
-        BATTIES_POWER_PROTECTION = 'Batteries and Power Protection'
+        BATTERIES_POWER_PROTECTION = 'Batteries and Power Protection'
         AUDIO = 'Audio'
         COPY_PRINTER_PAPER = 'Copy and Printer Paper'
         PHOTO_PRESENTATION = 'Photo and Presentation'
