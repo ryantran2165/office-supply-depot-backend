@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 
 class Product(models.Model):
@@ -68,14 +69,15 @@ class Product(models.Model):
 
     name = models.CharField(max_length=128)
     description = models.TextField()
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    weight = models.FloatField()
+    price = models.DecimalField(
+        max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
+    weight = models.FloatField(validators=[MinValueValidator(0)])
     img_url = models.URLField()
     category = models.CharField(
         max_length=128, choices=Category.choices)
     subcategory = models.CharField(
         max_length=128, choices=Subcategory.choices, blank=True)
-    inventory = models.IntegerField()
+    inventory = models.PositiveIntegerField()
 
     def __str__(self):
         return self.name

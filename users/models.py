@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import RegexValidator
 
 
 class CustomUserManager(BaseUserManager):
@@ -30,9 +31,26 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     username = None
-    email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(max_length=128)
-    last_name = models.CharField(max_length=128)
+    email = models.CharField(max_length=254, unique=True, validators=[
+        RegexValidator(
+            regex='^[a-zA-Z0-9_!#$%&\'*+/=?`{|}~^-]+(?:\.[a-zA-Z0-9_!#$%&\'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$'
+        )
+    ])
+    password = models.CharField(max_length=128, validators=[
+        RegexValidator(
+            regex='^[ -~]{6,}$'
+        )
+    ])
+    first_name = models.CharField(max_length=128, validators=[
+        RegexValidator(
+            regex='^[a-zA-Z][a-zA-Z ,.\'-]*$'
+        )
+    ])
+    last_name = models.CharField(max_length=128, validators=[
+        RegexValidator(
+            regex='^[a-zA-Z][a-zA-Z ,.\'-]*$'
+        )
+    ])
     is_driver = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'

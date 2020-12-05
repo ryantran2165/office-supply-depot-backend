@@ -6,4 +6,4 @@ class Cart(models.Model):
         to='users.CustomUser', on_delete=models.CASCADE)
     product = models.ForeignKey(
         to='products.Product', on_delete=models.CASCADE)
-    quantity = models.IntegerField()
+    quantity = models.PositiveIntegerField()
